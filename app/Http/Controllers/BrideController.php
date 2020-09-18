@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 // model
 use App\Bride;
 
-class RoleController extends Controller
+class BrideController extends Controller
 {
     public function index()
     {

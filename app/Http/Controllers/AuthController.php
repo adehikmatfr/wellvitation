@@ -33,13 +33,13 @@ class AuthController extends Controller
                'api_token' => $api_token
           ]);
           if ($data) {
-               $to_name = $req->input('name');
-               $to_email = $req->input('email');
-               $data = array('name' => $to_name, "body" => "A test mail");
-               Mail::send('emails.mail1', $data, function ($message) use ($to_name, $to_email) {
-                    $message->to($to_email, $to_name)->subject('Registration Succesfuly');
-                    $message->from('adehikmat.rpl2.smkn1kawali@gmail.com', 'Wedding');
-               });
+               // $to_name = $req->input('name');
+               // $to_email = $req->input('email');
+               // $data = array('name' => $to_name, "body" => "A test mail");
+               // Mail::send('emails.mail1', $data, function ($message) use ($to_name, $to_email) {
+               //      $message->to($to_email, $to_name)->subject('Registration Succesfuly');
+               //      $message->from('adehikmat.rpl2.smkn1kawali@gmail.com', 'Wedding');
+               // });
                return response(costumResponse("success", $data, 200, 1));
           } else {
                return response(costumResponse("failed", "internal server error", 500, 0));

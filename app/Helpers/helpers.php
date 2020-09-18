@@ -24,7 +24,7 @@ function generateRandomString($length = 80)
 function sendWa($message, $phone)
 {
     $curl = curl_init();
-    $token = "vvSJWJxr6ntVkNx4Sj06C2nDVW3fzavbDYUOxCYiOH0AJOFKqzUXx7sHBTGqpkFN";
+    $token = "aDOFtAIHYknv3BlrYPyiSwIyy26NVWE2uUrnxjZrhukVoL1HZuqQxSU4M7feWHkF";
     $data = [
         'phone' => $phone,
         'message' => $message,
@@ -38,13 +38,13 @@ function sendWa($message, $phone)
     curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
-    curl_setopt($curl, CURLOPT_URL, "https://console.wablas.com/api/send-message");
+    curl_setopt($curl, CURLOPT_URL, "https://teras.wablas.com/api/send-message");
     curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
     curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
     $result = curl_exec($curl);
     curl_close($curl);
     
-    return $token;
+    return $result;
 }
 
 function SendSms($message, $phone)

@@ -20,7 +20,6 @@ $ php -S localhost:8000 -t public
 
 ## features available
 
--   send mail
 -   whatsApp boot
 -   payment get ways
 -   create online weddings

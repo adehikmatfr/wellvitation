@@ -22,7 +22,7 @@ $api->version('v1', function ($api) {
     $api->post('/register', 'App\Http\Controllers\AuthController@register');
     $api->post('/login', 'App\Http\Controllers\AuthController@login');
     $api->get('/user', 'App\Http\Controllers\AuthController@user');
-    $api->post('/test', 'App\Http\Controllers\AuthController@test');
+    $api->get('/test', 'App\Http\Controllers\AuthController@test');
 
     // roles
     $api->get('/roles', 'App\Http\Controllers\RoleController@index');
@@ -54,8 +54,8 @@ $api->version('v1', function ($api) {
 
     // description
     $api->get('/descriptions', 'App\Http\Controllers\DescriptionController@index');
-    $api->get('/descriptions/{id}', 'App\Http\Controllers\Descriptiontroller@findId');
-    $api->post('/descriptions', 'App\Http\Controllers\Descriptiontroller@store');
-    $api->patch('/descriptions/{id}', 'App\Http\Controllers\Descriptiontroller@update');
-    $api->delete('/descriptions/{id}', 'App\Http\Controllers\Descriptiontroller@delete');
+    $api->get('/descriptions/{id}', 'App\Http\Controllers\DescriptionController@findId');
+    $api->post('/descriptions', 'App\Http\Controllers\DescriptionController@store');
+    $api->patch('/descriptions/{id}', 'App\Http\Controllers\DescriptionController@update');
+    $api->delete('/descriptions/{id}', 'App\Http\Controllers\DescriptionController@delete');
 });
