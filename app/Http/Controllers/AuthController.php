@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
-use App\Role;
+use App\Role; 
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
+// use Illuminate\Support\Facades\Mail;
+use SimpleSoftwareIO\QrCode\Generator;
 
 class AuthController extends Controller
 {
@@ -74,7 +75,10 @@ class AuthController extends Controller
      }
      public function test()
      {
-          $sms = sendWa("WA BOOT", '0881023365227');
-          return $sms;
+          // $sms = sendWa("WA BOOT", '0881023365227');
+          // return $sms;
+          // $qrcode = new Generator;
+          // return $qrcode->size(500)->format('svg')->generate('Make a qrcode without Laravel!','QrCode/1.svg');
+          
      }
 }

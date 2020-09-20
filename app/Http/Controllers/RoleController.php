@@ -10,7 +10,7 @@ class RoleController extends Controller
 {
     public function index()
     {
-        $data = Role::find()->where('id', '>', 1)->get();
+        $data = Role::all();
         return response(costumResponse("success", $data, 200, 1));
     }
 
