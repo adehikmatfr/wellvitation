@@ -58,4 +58,12 @@ $api->version('v1', function ($api) {
     $api->post('/descriptions', 'App\Http\Controllers\DescriptionController@store');
     $api->patch('/descriptions/{id}', 'App\Http\Controllers\DescriptionController@update');
     $api->delete('/descriptions/{id}', 'App\Http\Controllers\DescriptionController@delete');
+
+    // Order
+    $api->get('/orders', 'App\Http\Controllers\OrderController@index');
+    $api->get('/orders/{id}', 'App\Http\Controllers\OrderController@findId');
+    $api->post('/orders', 'App\Http\Controllers\OrderController@store');
+    $api->patch('/orders/{id}', 'App\Http\Controllers\OrderController@update');
+    $api->delete('/orders/{id}', 'App\Http\Controllers\OrderController@delete');
+    // 
 });

@@ -24,6 +24,7 @@ class Order extends Model
         'status_order'
     ];
 
+
     /**
      * The attributes excluded from the model's JSON form.
      *

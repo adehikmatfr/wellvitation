@@ -9,7 +9,8 @@
         "dingo/api": "^3.0.0",
         "illuminate/mail": "^7.27",
         "laravel/lumen-framework": "^7.0",
-        "simplesoftwareio/simple-qrcode":"^3.0"
+        "midtrans/midtrans-php": "^2.3",
+        "simplesoftwareio/simple-qrcode": "^3.0"
     },
     "require-dev": {
         "fzaninotto/faker": "^1.9.1",

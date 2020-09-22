@@ -102,3 +102,14 @@ function smsToken()
     curl_close($curl);
     return $response;
 }
+
+
+function generateOrderCode(){
+    $karakkter = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $panjang_karakter = strlen($karakkter);
+    $str = '';
+    for ($i = 0; $i < 4; $i++) {
+        $str .= $karakkter[rand(0, $panjang_karakter - 1)];
+    }
+    return "WELLVI-".$str."-".date('dmY');
+}

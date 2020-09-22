@@ -79,6 +79,6 @@ class AuthController extends Controller
           // return $sms;
           // $qrcode = new Generator;
           // return $qrcode->size(500)->format('svg')->generate('Make a qrcode without Laravel!','QrCode/1.svg');
-          
+          return env('MIDTRANS_TOKEN');
      }
 }
