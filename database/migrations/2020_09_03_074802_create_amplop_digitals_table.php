@@ -17,11 +17,14 @@ class CreateAmplopDigitalsTable extends Migration
             $table->id();
             $table->string('trx_id', 100);
             $table->bigInteger('user_id')->unsigned();
+            $table->bigInteger('order_id')->unsigned();
             $table->integer('nominal');
             $table->string('payment_method');
+            $table->string('payloads');
 
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('order_id')->references('id')->on('orders');
         });
     }
 

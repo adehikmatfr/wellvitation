@@ -104,11 +104,11 @@ function smsToken()
 }
 
 
-function generateOrderCode(){
+function generateCode($length=4){
     $karakkter = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $panjang_karakter = strlen($karakkter);
     $str = '';
-    for ($i = 0; $i < 4; $i++) {
+    for ($i = 0; $i < $length; $i++) {
         $str .= $karakkter[rand(0, $panjang_karakter - 1)];
     }
     return "WELLVI-".$str."-".date('dmY');
