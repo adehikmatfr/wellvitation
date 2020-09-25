@@ -7,7 +7,7 @@ function costumResponse($message, $data, $code, $status)
         "message" => $message,
         $fild => $data,
         "status_code" => $code
-    ]; 
+    ];
 }
 
 function generateRandomString($length = 80)
@@ -30,7 +30,9 @@ function sendWa($message, $phone)
         'message' => $message,
     ];
 
-    curl_setopt($curl, CURLOPT_HTTPHEADER,
+    curl_setopt(
+        $curl,
+        CURLOPT_HTTPHEADER,
         array(
             "Authorization: $token",
         )
@@ -43,7 +45,7 @@ function sendWa($message, $phone)
     curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
     $result = curl_exec($curl);
     curl_close($curl);
-    
+
     return $result;
 }
 
@@ -104,12 +106,13 @@ function smsToken()
 }
 
 
-function generateOrderCode(){
+function generateCode($length = 4)
+{
     $karakkter = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $panjang_karakter = strlen($karakkter);
     $str = '';
-    for ($i = 0; $i < 4; $i++) {
+    for ($i = 0; $i < $length; $i++) {
         $str .= $karakkter[rand(0, $panjang_karakter - 1)];
     }
-    return "WELLVI-".$str."-".date('dmY');
+    return "WELLVI-" . $str . "-" . date('dmY');
 }

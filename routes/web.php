@@ -66,4 +66,7 @@ $api->version('v1', function ($api) {
     $api->patch('/orders/{id}', 'App\Http\Controllers\OrderController@update');
     $api->delete('/orders/{id}', 'App\Http\Controllers\OrderController@delete');
     // 
+    $api->post('/payment/notification', 'App\Http\Controllers\PaymentController@notification');
+    $api->get('/payment/completed', 'App\Http\Controllers\PaymentController@completed');
+    $api->post('/payment/failed', 'App\Http\Controllers\PaymentController@failed');
 });

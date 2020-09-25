@@ -24,21 +24,21 @@ use Illuminate\Support\Facades\Hash;
 $factory->define(User::class, function (Faker $faker) {
     $api_token = generateRandomString();
     return [
-                'name' => $faker->name,
-               'email' => $faker->unique()->safeEmail,
-               'password' =>Hash::make('12345678'),
-               'role_id' => rand(2,5),
-               'phone' => $faker->e164PhoneNumber,
-               'photo' => 'default.jpg',
-               'isAdmin' => 1,
-               'api_token' => $api_token
+        'name' => $faker->name,
+        'email' => $faker->unique()->safeEmail,
+        'password' => Hash::make('12345678'),
+        'role_id' => rand(1, 5),
+        'phone' => $faker->e164PhoneNumber,
+        'photo' => 'default.jpg',
+        'isAdmin' => 1,
+        'api_token' => $api_token
     ];
 });
 
 $factory->define(Product::class, function (Faker $faker) {
     return [
         'name_products' => $faker->word,
-        'price' => rand(0,1000000),
+        'price' => rand(0, 1000000),
         'detail' => $faker->text,
         'domain' => $faker->safeEmailDomain,
         'fitur' => $faker->text,
@@ -47,13 +47,13 @@ $factory->define(Product::class, function (Faker $faker) {
 
 $factory->define(\App\Voucher::class, function (Faker $faker) {
     return [
-        'name_voucher' =>$faker->word,
+        'name_voucher' => $faker->word,
         'code_voucher' => $faker->userName,
-        'discount' => rand(0,99),
-        'mix_discount' => rand(0,99),
-        'mix_usage' => rand(0,99),
-        'count' => rand(0,500000),
-        'status' => rand(0,1),
+        'discount' => rand(0, 99),
+        'mix_discount' => rand(0, 99),
+        'mix_usage' => rand(0, 99),
+        'count' => rand(0, 500000),
+        'status' => rand(0, 1),
         'expired_date' => $faker->date
     ];
 });
