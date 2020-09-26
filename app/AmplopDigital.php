@@ -14,6 +14,7 @@ class AmplopDigital extends Model
     protected $fillable = [
         'trx_id',
         'user_id',
+        'order_id',
         'nominal',
         'payment_method',
     ];

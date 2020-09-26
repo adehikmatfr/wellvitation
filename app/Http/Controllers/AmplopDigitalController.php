@@ -6,22 +6,20 @@ use Illuminate\Http\Request;
 // model
 use App\Order;
 use App\User;
-use App\Bride;
-use App\Description;
-use App\Voucher;
-use App\Product;
+use App\AmplopDigital;
 
-class OrderController extends Controller
+
+class AmplopDigitalController extends Controller
 {
     public function index(Request $req)
     {
-        $data = Order::all();
+        $data = AmplopDigital::all();
         return response(costumResponse("success", $data, 200, 1));
     }
 
     public function findId($id)
     {
-        $data = Order::find($id);
+        $data = AmplopDigital::find($id);
         return response(costumResponse("success", $data, 200, 1));
     }
 
@@ -29,51 +27,30 @@ class OrderController extends Controller
     {
         $this->validate($req, [
             'user_id' => 'required',
-            'bride_id' => 'required',
-            'product_id' => 'required',
-            'voucher_id' => 'required',
-            'desc_id' => 'required',
+            'order_id' => 'required',
+            'nominal' => 'required',
         ]);
         $userId = $req->input("user_id");
-        $brideId = $req->input("bride_id");
-        $productId = $req->input("product_id");
-        $voucherId = $req->input("voucher_id");
-        $descId = $req->input("desc_id");
+        $orderId = $req->input("order_id");
+        $nominal = $req->input("nominal");
 
         $user = User::where("id", $userId)->first();
         if (!$user) {
             return response(costumResponse("failed", "user not found", 401, 0));
         }
-        $bride = Bride::where("id", $brideId)->first();
-        if (!$bride) {
+        $order = Order::where("id", $orderId)->first();
+        if (!$order) {
             return response(costumResponse("failed", "bride not found", 401, 0));
         }
-        $product = Product::where("id", $productId)->first();
-        if (!$product) {
-            return response(costumResponse("failed", "product not found", 401, 0));
-        }
-        $voucher = Voucher::where("id", $voucherId)->first();
-        if (!$voucher) {
-            return response(costumResponse("failed", "voucher not found", 401, 0));
-        }
-        $desc = Description::where("id", $descId)->first();
-        if (!$desc) {
-            return response(costumResponse("failed", "description not found", 401, 0));
-        }
-        $order_code = generateCode();
-        $price_total = 2000;
 
-        $data = Order::create([
-            "order_code" => $order_code,
+        $trx_code = generateCode(6);
+
+        $data = AmplopDigital::create([
+            "trx_id" => $trx_code,
             "user_id" => $user->id,
-            "bride_id" => $bride->id,
-            "product_id" => $product->id,
-            "voucher_id" => $voucher->id,
-            "desc_id" => $desc->id,
-            "price_total" => $price_total,
+            "order_id" => $order->id,
+            "nominal" => $nominal,
             "payment_method" => "",
-            "payment_status" => 0,
-            "status_order" => 0
         ]);
         if ($data) {
             $userDetail = [
@@ -81,24 +58,17 @@ class OrderController extends Controller
                 $user->email,
                 $user->phone,
             ];
-            $itemDetail = [
-                $product->id,
-                $product->price,
-                $product->name_products,
-                1
-            ];
-            $orderDetail = [
-                $data->order_code,
-                $data->price_total,
+            $paymentDetail = [
+                $data->trx_id,
+                $data->nominal,
             ];
             $params = $this->generatePaymentToken(
                 $userDetail,
-                $orderDetail,
-                $itemDetail
+                $paymentDetail
             );
             $snapUrl = \Midtrans\Snap::createTransaction($params)->redirect_url;
             $result = [
-                'order_code' => $data->order_code,
+                'trx_id' => $data->trx_id,
                 'redirect_url' => $snapUrl
             ];
             return response(costumResponse("success", $result, 200, 1));
@@ -107,7 +77,7 @@ class OrderController extends Controller
         }
     }
 
-    private function generatePaymentToken($user, $order, $item)
+    private function generatePaymentToken($user, $order)
     {
         $this->initPaymentGetWay();
 
@@ -117,21 +87,12 @@ class OrderController extends Controller
             'email' => $user[1],
             'phone' => $user[2],
         ];
-        $items = [
-            [
-                'id' => $item[0],
-                'price' => $item[1],
-                'name' => $item[2],
-                'quantity' => $item[3]
-            ]
-        ];
         $params = [
             'enabled_payments' => \App\PaymentOrders::PAYMENT_CHANEL,
             'transaction_details' => [
                 'order_id' => $order[0],
                 'gross_amount' => $order[1],
             ],
-            'item_details' => $items,
             'customer_details' => $costumerDetails,
             'expiry' => [
                 'start_time' => date('Y-m-d H:i:s T'),

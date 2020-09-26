@@ -7,7 +7,9 @@ use Illuminate\Http\Request;
 use \Midtrans\Notification;
 
 use App\Order;
+use App\AmplopDigital;
 use App\PaymentOrders;
+use App\PaymentAmplop;
 
 class PaymentController extends Controller
 {
@@ -37,13 +39,18 @@ class PaymentController extends Controller
 
         $transaction = $paymentNotif->transaction_status;
         $type = $paymentNotif->payment_type;
-        $order_id = $paymentNotif->order_id;
         $fraud = $paymentNotif->fraud_status;
 
-        $order = Order::where('order_code', $paymentNotif->order_id)->firstOrFail();
-        $order->payment_method = $type;
-        $order->save();
-
+        $order = Order::where('order_code', $paymentNotif->order_id)->first();
+        if ($order !== null) {
+            $order->payment_method = $type;
+            $order->save();
+        }
+        $amplop = AmplopDigital::where('trx_id', $paymentNotif->order_id)->first();
+        if ($amplop !== null) {
+            $amplop->payment_method = $type;
+            $amplop->save();
+        }
         $paymentStatus = "";
         $maskedCard = "";
         $eci = "";
@@ -73,7 +80,7 @@ class PaymentController extends Controller
         }
 
         $pay = [
-            'order_id' => $order->id,
+            $amplop === null ? 'order_id' : 'amplop_id' => $amplop === null ? $order->id : $amplop->id,
             'transaction_time' => $paymentNotif->transaction_time,
             'transaction_status' => $paymentStatus,
             'transaction_id' => $paymentNotif->transaction_id,
@@ -92,7 +99,16 @@ class PaymentController extends Controller
             'card_type' => $card_type,
             'bank' => $bank
         ];
-        $data = PaymentOrders::create($pay);
+
+        $data = false;
+        if ($order !== null) {
+            $data = PaymentOrders::create($pay);
+        }
+
+        if ($amplop !== null) {
+            $data = PaymentAmplop::create($pay);
+        }
+
         if ($data) {
             return response(costumResponse("success", $data, 200, 1));
         } else {
@@ -103,13 +119,14 @@ class PaymentController extends Controller
     public function completed(Request $req)
     {
         if ($req->status_code === "200") {
-            $transaction = $req->input("transaction_status");
             $order_id = $req->input("order_id");
-            $order = Order::where('order_code', $order_id)->firstOrFail();
-            $order->payment_status = 1;
-            $order->status_order = 1;
-            $order->save();
-            return response(costumResponse("success", $order, 200, 1));
+            $order = Order::where('order_code', $order_id)->first();
+            if ($order !== null) {
+                $order->payment_status = 1;
+                $order->status_order = 1;
+                $order->save();
+            }
+            return response(costumResponse("success", $req, 200, 1));
         }
         return response(costumResponse("failed", "transaction not complited", 204, 0));
     }
@@ -117,5 +134,17 @@ class PaymentController extends Controller
     public function failed(Request $req)
     {
         return $req;
+    }
+
+    public function orderHistory(Request $req)
+    {
+        $data = PaymentOrders::all();
+        return response(costumResponse("success", $data, 200, 1));
+    }
+
+    public function amplopHistory(Request $req)
+    {
+        $data = PaymentAmplop::all();
+        return response(costumResponse("success", $data, 200, 1));
     }
 }
